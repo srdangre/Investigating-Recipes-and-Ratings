@@ -12,7 +12,7 @@ A good way to avoid introducing excessive amounts of ultraprocessed food into on
 
 
 
-The dataset I choose to explore was the Recipes and Ratings dataset, which contains recipes and ratings scrapped by Majumder et al. from https://www.food.com/. The final dataset is a merged version of two individal datasets: recipes and ratings which are each explored in more detail below:
+The dataset I choose to explore was the Recipes and Ratings dataset, which contains recipes and ratings scrapped by Majumder et al. from [food.com](https://www.food.com/). The final dataset is a merged version of two individal datasets: recipes and ratings which are each explored in more detail below:
 
 ##### RECIPES
 Number of Rows: 83782
