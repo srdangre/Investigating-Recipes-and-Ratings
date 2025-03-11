@@ -20,7 +20,7 @@ Final Project; DSC80
 ### Bivariate Plots
 - High sodium vs low sodium n_steps, boxplot
 ### Interesting Aggregates
-
+- Since Americans statistically consume too much sodium, I wanted to see if high sodium recipies were more highly rated
 ## Assessment of Missingness
 
 ## Hypothesis Testing
