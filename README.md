@@ -44,9 +44,20 @@ Number of Rows: 731927
 | `review`   | Review text          |
 
 ## Data Cleaning and Exploratory Data Analysis
+
+### Data Cleaning
+After downloading both datasets the steps below were followed to create a merged dataset 'food_df' that was used for the rest of the project. 
+
+1. The recipes and reviews datasets were merged together using left merge
+2. Since ratings are only between 1 and 5, ratings of 0 were filled with np.nan values
+3. Average rating per recipe was found and added back to the merged dataset in a new column 'avg_rating'
+4. The 'nutrition' column was converted from a string to a list and seperated into respective numerical #/PDV columns. Sodium (PDV) was the most relevant nutritional value to this project. 
+5. A new column 'sodium_lvl', containing booleans, was created by filtering the Sodium (PDV) column with the value '20 PDV'. The fda considers sodium levels below 20 PDV 'low sodium' and above 20 PDV high sodium. 
+
+**ADD HEAD OF DF HERE**
 ### Univariate Plots
 - N_steps histogram
-- Sodium level histogram
+- Sodium level histogra
 ### Bivariate Plots
 - High sodium vs low sodium n_steps, boxplot
 ### Interesting Aggregates
