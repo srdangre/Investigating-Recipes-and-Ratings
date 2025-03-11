@@ -14,6 +14,12 @@ Final Project; DSC80
 - Do more simple recipies have lower sodium?
 
 ## Data Cleaning and Exploratory Data Analysis
+### Univariate Plots
+- N_steps histogram
+- Sodium level histogram
+### Bivariate Plots
+- High sodium vs low sodium n_steps, boxplot
+### Interesting Aggregates
 
 ## Assessment of Missingness
 
