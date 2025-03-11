@@ -1,17 +1,45 @@
-# Investigating-Recipes-and-Ratings
+# Investigating Sodium Levels in Recipes
 by Saloni Dangre
-Final Project; DSC80
+DSC80 Final Project
 
 ## Introduction:
-- Diet is an important contributor to overall well being
-- Talk about processed foods/introduction/overall negative impact
-  >- Processed food tends to have high sodium, low potassium
-  >- According to the FDA a food is 'high' in something if it is over 20% of the PDV
-- People have less time to cook-> find research-> is this true?
-- https://www.fda.gov/food/nutrition-facts-label/lows-and-highs-percent-daily-value-nutrition-facts-label#:~:text=The%20percent%20Daily%20Value%20(%25,or%20low%20in%20a%20nutrient.
 
-- Do more simple recipies have higher ratings?
-- Do more simple recipies have lower sodium?
+Maintaining a healthy diet is an essential part of increasing longevity, improving quality of life, and decreasing the risk of developing chronic illnesses such as heart disease, diabetes and cancer.
+
+This is, however, becoming increasingly difficult to achieve due to the prevalence and accessibility of ultraprocessed foods. Ultraprocessed foods are foods that have undergone extensive industrial processing and contain main added ingredients, artificial colors, and stabilizers. While appealing and easy to indulge in, exposure to ultraprocessed foods is ultimately linked with the chronic illnesses listed above. 
+
+A good way to avoid introducing excessive amounts of ultraprocessed food into one's diet is to prepare meals at home. Cooking meals, however can be time consuming and complex. To look further into the relationship between sodium and the complexity of recipes, the main question I aimed to explore was: **Do more simple recipes contain less sodium?**. If recipes with a fewer number of steps contained lower sodium levels, cooking simple meals could be proposed as a more time-effective, realistic replacement for ultraprocessed foods. 
+
+
+
+The dataset I choose to explore was the Recipes and Ratings dataset, which contains recipes and ratings scrapped by Majumder et al. from https://www.food.com/. The final dataset is a merged version of two individal datasets: recipes and ratings which are each explored in more detail below:
+
+##### RECIPES
+Number of Rows: 83782
+Columns (relevant columns have an astrik)
+| Column          | Description |
+|----------------|------------|
+| `name`         | Recipe name |
+| `id`           | Recipe ID |
+| `minutes`      | Minutes to prepare recipe |
+| `contributor_id` | User ID who submitted this recipe |
+| `submitted`    | Date recipe was submitted |
+| `tags`         | Food.com tags for recipe |
+| `nutrition*`    | Nutrition information in the form `[calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), carbohydrates (PDV)]`; PDV stands for “percentage of daily value” |
+| `n_steps*`      | Number of steps in recipe |
+| `steps`        | Text for recipe steps, in order |
+| `description`  | User-provided description |
+
+##### RATINGS
+Number of Rows: 731927
+Columns
+| Column      | Description          |
+|------------|----------------------|
+| `user_id`  | User ID              |
+| `recipe_id` | Recipe ID           |
+| `date`     | Date of interaction  |
+| `rating`   | Rating given         |
+| `review`   | Review text          |
 
 ## Data Cleaning and Exploratory Data Analysis
 ### Univariate Plots
