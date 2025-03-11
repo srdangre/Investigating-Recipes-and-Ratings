@@ -8,7 +8,7 @@ Final Project; DSC80
   >- Processed food tends to have high sodium, low potassium
   >- According to the FDA a food is 'high' in something if it is over 20% of the PDV
 - People have less time to cook-> find research-> is this true?
-- 
+- https://www.fda.gov/food/nutrition-facts-label/lows-and-highs-percent-daily-value-nutrition-facts-label#:~:text=The%20percent%20Daily%20Value%20(%25,or%20low%20in%20a%20nutrient.
 
 - Do more simple recipies have higher ratings?
 - Do more simple recipies have lower sodium?
