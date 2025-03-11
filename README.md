@@ -16,7 +16,8 @@ The dataset I choose to explore was the Recipes and Ratings dataset, which conta
 
 ##### RECIPES
 Number of Rows: 83782
-Columns (relevant columns have an astrik)
+
+(relevant columns have an astrik)
 | Column          | Description |
 |----------------|------------|
 | `name`         | Recipe name |
@@ -32,7 +33,8 @@ Columns (relevant columns have an astrik)
 
 ##### RATINGS
 Number of Rows: 731927
-Columns
+
+
 | Column      | Description          |
 |------------|----------------------|
 | `user_id`  | User ID              |
