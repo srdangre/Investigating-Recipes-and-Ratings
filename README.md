@@ -21,6 +21,7 @@ Final Project; DSC80
 - High sodium vs low sodium n_steps, boxplot
 ### Interesting Aggregates
 - Since Americans statistically consume too much sodium, I wanted to see if high sodium recipies were more highly rated
+
 |   High |    Low |
 |-------:|-------:|
 |   1117 |   1753 |
@@ -28,7 +29,9 @@ Final Project; DSC80
 |   2887 |   4285 |
 |  15159 |  22148 |
 |  67712 | 101964 |
+
 - There were more ratings for low sodium recipies to begin with. To get a better sense of how ratings were distributed among each category, the counts were divded by the total number of ratings per column
+
 |   High_prop |   Low_prop |
 |------------:|-----------:|
 |   0.012716  |  0.0133256 |
@@ -36,6 +39,7 @@ Final Project; DSC80
 |   0.0328658 |  0.0325729 |
 |   0.172571  |  0.168361  |
 |   0.770839  |  0.775091  |
+
 - Looking at the proportions, high and low sodium levels have a similar distribution of ratings.
 ## Assessment of Missingness
 
