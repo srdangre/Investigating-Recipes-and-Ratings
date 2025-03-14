@@ -72,7 +72,6 @@ The cleaned dataframe has the same columns as the merged recipes and ratings dat
   height="600"
   frameborder="0"
 ></iframe>
-
 The number of steps is most frequently around 10 steps, and the overall distribution of number of steps is skewed to the right, with some outliers close to 100 steps. 
 
 <iframe
@@ -81,7 +80,6 @@ The number of steps is most frequently around 10 steps, and the overall distribu
   height="600"
   frameborder="0"
 ></iframe>
-
 The sodium PDV histogram (before removing outliers) is heavily skewed to the right, indicating that there are some especially high sodium outliers in this dataset. 
 
 <iframe
@@ -90,7 +88,6 @@ The sodium PDV histogram (before removing outliers) is heavily skewed to the rig
   height="600"
   frameborder="0"
 ></iframe>
-
 After removing the outliers, the sodium PDV histogram is still skewed to the right, but less heavily so. 
 
 ### Bivariate Plots
@@ -100,12 +97,11 @@ After removing the outliers, the sodium PDV histogram is still skewed to the rig
   height="600"
   frameborder="0"
 ></iframe>
-
 The n_steps for low and high sodium recipes looked similar, with high sodium recipies having a slightly larger median n_steps. The two categories also have slightly different patterns of n_step upper outliers. 
 
 
 ### Interesting Aggregates
-- Since Americans statistically consume too much sodium, I wanted to see if high sodium recipies were more highly rated
+Since Americans statistically consume too much sodium, I wanted to see if high sodium recipies were more highly rated
 
 |   rating |   High |    Low |
 |---------:|-------:|-------:|
@@ -115,7 +111,7 @@ The n_steps for low and high sodium recipes looked similar, with high sodium rec
 |        4 |  11790 |  22148 |
 |        5 |  51342 | 101964 |
 
-- There were more ratings for low sodium recipies to begin with. To get a better sense of how ratings were distributed among each category, the counts were divided by the total number of ratings per column
+There were more ratings for low sodium recipies to begin with. To get a better sense of how ratings were distributed among each category, the counts were divided by the total number of ratings per column
 
 |   rating |   High_prop |   Low_prop |
 |---------:|------------:|-----------:|
@@ -125,7 +121,7 @@ The n_steps for low and high sodium recipes looked similar, with high sodium rec
 |        4 |   0.176545  |  0.168361  |
 |        5 |   0.7688    |  0.775091  |
 
-- Looking at the proportions, high and low sodium levels have a similar distribution of ratings, with there being a slightly higher proportion of 4-star ratings for high sodium recipes and a slightly higher proportion of 5-star ratings for low sodium recipes.
+Looking at the proportions, high and low sodium levels have a similar distribution of ratings, with there being a slightly higher proportion of 4-star ratings for high sodium recipes and a slightly higher proportion of 5-star ratings for low sodium recipes.
 
 ## Assessment of Missingness
 
@@ -147,7 +143,6 @@ Under the assumption that shorter or more simple recipes may not have a descript
   height="600"
   frameborder="0"
 ></iframe>
-
 Since the distributions of minutes spent cooking when description is True and minutes spent cooking when description is False have a different shape and since we only aim to find out if the two distributions are different, we will use the KS test statistic for our permutation test.
 
 <iframe
@@ -156,7 +151,6 @@ Since the distributions of minutes spent cooking when description is True and mi
   height="600"
   frameborder="0"
 ></iframe>
-
 Visually, the observed KS test statistic is in the emperical distribution of the KS test statistic, indicating that we fail to reject our null hypothesis that, using the 'minutes' column, the missing and not-missing distributions are the same. Missingness doesn't depend on the 'minutes spent' column. 
 
 This was confirmed by my p-value of 0.192, which is clearly above my significance level of 0.05. 
@@ -170,7 +164,6 @@ Following the same idea that shorter or more simple recipes may not have a descr
   height="600"
   frameborder="0"
 ></iframe>
-
 Since the distributions have different shapes and since we only aim to find out if the two distributions are different, we will use the KS test statistic for our permutation test. 
 
 <iframe
@@ -179,7 +172,6 @@ Since the distributions have different shapes and since we only aim to find out 
   height="600"
   frameborder="0"
 ></iframe>
-
 Visually, the observed KS test statistic is at the very edge of the emperical distribution of the KS test statistic, indicating that we might be able to reject our null hypothesis that, using the 'n_steps' column, the missing and not-missing distributions are the same. Missingness does depend on the 'n_steps' column. 
 
 This was confirmed by my p-value of 0.008, which is clearly below my significance level of 0.05. 
