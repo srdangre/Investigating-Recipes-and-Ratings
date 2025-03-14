@@ -179,7 +179,35 @@ This was confirmed by my p-value of 0.008, which is clearly below my significanc
 Overall, the missingness of the descriptions value **does not** depend on minutes spent and **does** depend on n_steps. 
 
 ## Hypothesis Testing
-- Will most likely be a prediction problem
+Next, I used permutation testing to better understand the question: "Do more simple recipes contain less sodium?"
+
+First I created a histogram to look at the distributions of n_steps at high and low sodium levels
+
+<iframe
+  src="assets/dist_high_low_sod.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+I used the difference in group means test statistic since the distributions looked like they were similar shapes with slightly different centers. 
+
+Null Hypothesis:
+Alternative Hypothesis:
+
+<iframe
+  src="assets/perm_testing_emp_dist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+On the empirical distribution of the mean differences with the observed group mean plotted, the observed group mean is far from the emperical distribution of the test statistic, indicating that we will likely reject our null hypothesis. I further confirmed this by calculating a p-value.
+
+I decided to choose a lower significance level to set more strict standards for evidence to reject the null hypothesis
+
+Significance Level: 0.01
+p-value: 0.0
+
+Since my p-value is below my significance level, I reject my null hypothesis that there is no difference between the group mean n_steps of the high and low sodium groups. The difference between the two samples is statistically significant.
 
 ## Framing a Prediction Problem
 
