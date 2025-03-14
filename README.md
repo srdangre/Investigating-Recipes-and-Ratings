@@ -8,7 +8,7 @@ Maintaining a healthy diet is an essential part of increasing longevity, improvi
 
 This is, however, becoming increasingly difficult to achieve due to the prevalence and accessibility of ultraprocessed foods. Ultraprocessed foods are foods that have undergone extensive industrial processing and contain main added ingredients, artificial colors, and stabilizers. While appealing and easy to indulge in, exposure to ultraprocessed foods is ultimately linked with the chronic illnesses listed above. 
 
-A good way to avoid introducing excessive amounts of ultraprocessed food into one's diet is to prepare meals at home. Cooking meals, however can be time consuming and complex. To look further into the relationship between sodium and the complexity of recipes, the main question I aimed to explore was: **Do more simple recipes contain less sodium?**. If recipes with a fewer number of steps contained lower sodium levels, cooking simple meals could be proposed as a more time-effective, realistic replacement for ultraprocessed foods. 
+A good way to avoid introducing excessive amounts of ultraprocessed food into one's diet is to prepare meals at home. Cooking meals, however can be time consuming and complex. To look further into the relationship between sodium and the complexity of recipes, the main question I aimed to explore was: **Do more simple recipes contain less sodium?** If recipes with a fewer number of steps contained lower sodium levels, cooking simple meals could be proposed as a more time-effective, realistic replacement for ultraprocessed foods. 
 
 
 
@@ -17,7 +17,8 @@ The dataset I choose to explore was the Recipes and Ratings dataset, which conta
 ##### RECIPES
 Number of Rows: 83782
 
-(relevant columns have an astrik)
+(relevant columns have an asterisk)
+
 | Column          | Description |
 |----------------|------------|
 | `name`         | Recipe name |
@@ -48,13 +49,24 @@ Number of Rows: 731927
 ### Data Cleaning
 After downloading both datasets the steps below were followed to create a merged dataset 'food_df' that was used for the rest of the project. 
 
-1. The recipes and reviews datasets were merged together using left merge
-2. Since ratings are only between 1 and 5, ratings of 0 were filled with np.nan values
-3. Average rating per recipe was found and added back to the merged dataset in a new column 'avg_rating'
-4. The 'nutrition' column was converted from a string to a list and seperated into respective numerical #/PDV columns. Sodium (PDV) was the most relevant nutritional value to this project. 
-5. A new column 'sodium_lvl', containing booleans, was created by filtering the Sodium (PDV) column with the value '20 PDV'. The fda considers sodium levels below 20 PDV 'low sodium' and above 20 PDV high sodium. 
+1. The recipes and reviews datasets were merged on 'id' and 'recipe_id' respectively using left merge
+2. Since ratings are typically on a scale of 1 to 5, ratings of 0 were treated as missing ratings and replaced with np.nan values
+3. Average rating per recipe was found by grouping the dataframe by recipe_id and calculating the mean value for the rating column. The average ratings were then added back to the merged dataset under a new column 'avg_rating'
+4. The 'nutrition' column was converted from a string to a list and seperated into respective columns (representing # for calories and PDV for the rest) as float values. Sodium (PDV) was the most relevant nutritional value to this project. 
+5. A new column 'sodium_lvl', containing booleans, was created by filtering the Sodium (PDV) column using the value 20 PDV as the threshold. The [FDA](https://www.fda.gov/food/nutrition-facts-label/lows-and-highs-percent-daily-value-nutrition-facts-label#:~:text=The%20percent%20Daily%20Value%20(%25,or%20low%20in%20a%20nutrient) considers sodium levels above 20 PDV 'high sodium', so in this study, I categorized recipes above 20 PDV as 'High Sodium' and recipes under this threshold 'Low Sodium'. 
+*After examining the FDA site more closely, I found that 'Low Sodium' actually refers to food items that are below 5 PDV. For the sake of this study, the 'Low Sodium' category represents all sodium levels that are not high.*
 
-**ADD HEAD OF DF HERE**
+The cleaned dataframe has the same columns as the merged recipes and ratings dataframe with additional PDV values and a new sodium_lvl column. The dataframe is displayed below with relevant columns: 
+
+| name                                 |   recipe_id |   sodium (PDV) |   rating |   avg_rating |   n_steps | sodium_lvl   |
+|:-------------------------------------|------------:|---------------:|---------:|-------------:|----------:|:-------------|
+| 1 brownies in the world    best ever |      333281 |              3 |        4 |            4 |        10 | Low          |
+| 1 in canada chocolate chip cookies   |      453467 |             22 |        5 |            5 |        12 | High         |
+| 412 broccoli casserole               |      306168 |             32 |        5 |            5 |         6 | High         |
+| 412 broccoli casserole               |      306168 |             32 |        5 |            5 |         6 | High         |
+| 412 broccoli casserole               |      306168 |             32 |        5 |            5 |         6 | High         |
+
+
 ### Univariate Plots
 - N_steps histogram
 - Sodium level histogra
