@@ -10,8 +10,6 @@ This is, however, becoming increasingly difficult to achieve due to the prevalen
 
 A good way to avoid introducing excessive amounts of ultraprocessed food into one's diet is to prepare meals at home. Cooking meals, however can be time consuming and complex. To look further into the relationship between sodium and the complexity of recipes, the main question I aimed to explore was: **Do more simple recipes contain less sodium?** If recipes with a fewer number of steps contained lower sodium levels, cooking simple meals could be proposed as a more time-effective, realistic replacement for ultraprocessed foods. 
 
-
-
 The dataset I choose to explore was the Recipes and Ratings dataset, which contains recipes and ratings scrapped by Majumder et al. from [food.com](https://www.food.com/). The final dataset is a merged version of two individal datasets: recipes and ratings which are each explored in more detail below:
 
 ##### RECIPES
@@ -35,7 +33,6 @@ Number of Rows: 83782
 ##### RATINGS
 Number of Rows: 731927
 
-
 | Column      | Description          |
 |------------|----------------------|
 | `user_id`  | User ID              |
@@ -55,6 +52,7 @@ After downloading both datasets the steps below were followed to create a merged
 4. The 'nutrition' column was converted from a string to a list and seperated into respective columns (representing # for calories and PDV for the rest) as float values. Sodium (PDV) was the most relevant nutritional value to this project. 
 5. A new column 'sodium_lvl', containing booleans, was created by filtering the Sodium (PDV) column using the value 20 PDV as the threshold. The [FDA](https://www.fda.gov/food/nutrition-facts-label/lows-and-highs-percent-daily-value-nutrition-facts-label#:~:text=The%20percent%20Daily%20Value%20(%25,or%20low%20in%20a%20nutrient) considers sodium levels above 20 PDV 'high sodium', so in this study, I categorized recipes above 20 PDV as 'High Sodium' and recipes under this threshold 'Low Sodium'. 
 *After examining the FDA site more closely, I found that 'Low Sodium' actually refers to food items that are below 5 PDV. For the sake of this study, the 'Low Sodium' category represents all sodium levels that are not high.*
+6. Outliers in Sodium (PDV) were removed using the IQR method of outlier detection. 
 
 The cleaned dataframe has the same columns as the merged recipes and ratings dataframe with additional PDV values and a new sodium_lvl column. The dataframe is displayed below with relevant columns: 
 
@@ -68,33 +66,125 @@ The cleaned dataframe has the same columns as the merged recipes and ratings dat
 
 
 ### Univariate Plots
-- N_steps histogram
-- Sodium level histogra
+<iframe
+  src="assets/n_steps Histogram.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The number of steps is most frequently around 10 steps, and the overall distribution of number of steps is skewed to the right, with some outliers close to 100 steps. 
+
+<iframe
+  src="assets/Sodium PDV Histogram.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The sodium PDV histogram (before removing outliers) is heavily skewed to the right, indicating that there are some especially high sodium outliers in this dataset. 
+
+<iframe
+  src="assets/Sodium PDV Histogram (removed outliers).html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+After removing the outliers, the sodium PDV histogram is still skewed to the right, but less heavily so. 
+
 ### Bivariate Plots
-- High sodium vs low sodium n_steps, boxplot
+<iframe
+  src="assets/bivariate_plot.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The n_steps for low and high sodium recipes looked similar, with high sodium recipies having a slightly larger median n_steps. The two categories also have slightly different patterns of n_step upper outliers. 
+
+
 ### Interesting Aggregates
 - Since Americans statistically consume too much sodium, I wanted to see if high sodium recipies were more highly rated
 
 |   rating |   High |    Low |
 |---------:|-------:|-------:|
-|        1 |   1117 |   1753 |
-|        2 |    967 |   1401 |
-|        3 |   2887 |   4285 |
-|        4 |  15159 |  22148 |
-|        5 |  67712 | 101964 |
+|        1 |    787 |   1753 |
+|        2 |    705 |   1401 |
+|        3 |   2158 |   4285 |
+|        4 |  11790 |  22148 |
+|        5 |  51342 | 101964 |
 
-- There were more ratings for low sodium recipies to begin with. To get a better sense of how ratings were distributed among each category, the counts were divded by the total number of ratings per column
+- There were more ratings for low sodium recipies to begin with. To get a better sense of how ratings were distributed among each category, the counts were divided by the total number of ratings per column
 
 |   rating |   High_prop |   Low_prop |
 |---------:|------------:|-----------:|
-|        1 |   0.012716  |  0.0133256 |
-|        2 |   0.0110084 |  0.0106499 |
-|        3 |   0.0328658 |  0.0325729 |
-|        4 |   0.172571  |  0.168361  |
-|        5 |   0.770839  |  0.775091  |
+|        1 |   0.0117846 |  0.0133256 |
+|        2 |   0.0105567 |  0.0106499 |
+|        3 |   0.0323141 |  0.0325729 |
+|        4 |   0.176545  |  0.168361  |
+|        5 |   0.7688    |  0.775091  |
 
-- Looking at the proportions, high and low sodium levels have a similar distribution of ratings.
+- Looking at the proportions, high and low sodium levels have a similar distribution of ratings, with there being a slightly higher proportion of 4-star ratings for high sodium recipes and a slightly higher proportion of 5-star ratings for low sodium recipes.
+
 ## Assessment of Missingness
+
+### NMR Analysis
+The three main columns with missing data in my dataset are descriptions, ratings, and reviews. Avg_reviews also has missing data, but since data from reviews was used to create the average reviews column, the missing data is directly related to the missing data in reviews. The missingness of average reviews will not be discussed in this section.
+
+I believe both ratings and reviews are both NMAR. People tend to leave ratings and reviews when they feel strongly about a product, item, or, in this case, recipe. There are no columns in the dataframe that indicate user emotion attached to recipe other than the columns ratings and reviews themselves. A column indicating reviewer strength of opinion could be added to this dataframe to make these two columns MAR. 
+
+I believe the description column, however, is MAR, and choose to further analyze its missingness dependency.
+
+### Missingness Dependency
+Under the assumption that shorter or more simple recipes may not have a description, I first choose to investigate the 'minutes' column
+
+*The outliers in minutes spent cooking initially made it difficult to see the shape of the two distributions so the plot was rescaled*
+
+<iframe
+  src="assets/Minutes Spent Cooking by Missingness of Description.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Since the distributions of minutes spent cooking when description is True and minutes spent cooking when description is False have a different shape and since we only aim to find out if the two distributions are different, we will use the KS test statistic for our permutation test.
+
+<iframe
+  src="assets/Empirical Distribution of the K-S Statistic.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Visually, the observed KS test statistic is in the emperical distribution of the KS test statistic, indicating that we fail to reject our null hypothesis that, using the 'minutes' column, the missing and not-missing distributions are the same. Missingness doesn't depend on the 'minutes spent' column. 
+
+This was confirmed by my p-value of 0.192, which is clearly above my significance level of 0.05. 
+
+
+Following the same idea that shorter or more simple recipes may not have a description, I decided to investigate the 'n_steps' column next. 
+
+<iframe
+  src="assets/Number of Steps by Missingness of Description.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Since the distributions have different shapes and since we only aim to find out if the two distributions are different, we will use the KS test statistic for our permutation test. 
+
+<iframe
+  src="assets/Second_Empirical Distribution of the K-S Statistic.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Visually, the observed KS test statistic is at the very edge of the emperical distribution of the KS test statistic, indicating that we might be able to reject our null hypothesis that, using the 'n_steps' column, the missing and not-missing distributions are the same. Missingness does depend on the 'n_steps' column. 
+
+This was confirmed by my p-value of 0.008, which is clearly below my significance level of 0.05. 
+
+Overall, the missingness of the descriptions value **does not** depend on minutes spent and **does** depend on n_steps. 
 
 ## Hypothesis Testing
 - Will most likely be a prediction problem
