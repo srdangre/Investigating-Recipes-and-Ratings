@@ -1,5 +1,5 @@
 # Investigating Sodium Levels and Number of Steps in Recipes
-by Saloni Dangre
+by Saloni Dangre;
 DSC80 Final Project
 
 ## Introduction:
@@ -50,8 +50,9 @@ After downloading both datasets the steps below were followed to create a merged
 2. Since ratings are typically on a scale of 1 to 5, ratings of 0 were treated as missing ratings and replaced with np.nan values
 3. Average rating per recipe was found by grouping the dataframe by recipe_id and calculating the mean value for the rating column. The average ratings were then added back to the merged dataset under a new column 'avg_rating'
 4. The 'nutrition' column was converted from a string to a list and seperated into respective columns (representing # for calories and PDV for the rest) as float values. Sodium (PDV) was the most relevant nutritional value to this project. 
-5. A new column 'sodium_lvl', containing booleans, was created by filtering the Sodium (PDV) column using the value 20 PDV as the threshold. The [FDA](https://www.fda.gov/food/nutrition-facts-label/lows-and-highs-percent-daily-value-nutrition-facts-label#:~:text=The%20percent%20Daily%20Value%20(%25,or%20low%20in%20a%20nutrient) considers sodium levels above 20 PDV 'high sodium', so in this study, I categorized recipes above 20 PDV as 'High Sodium' and recipes under this threshold 'Low Sodium'. 
-*After examining the FDA site more closely, I found that 'Low Sodium' actually refers to food items that are below 5 PDV. For the sake of this study, the 'Low Sodium' category represents all sodium levels that are not high.*
+5. A new column 'sodium_lvl', containing booleans, was created by filtering the Sodium (PDV) column using the value 20 PDV as the threshold. The [FDA](https://www.fda.gov/food/nutrition-facts-label/lows-and-highs-percent-daily-value-nutrition-facts-label) considers sodium levels above 20 PDV 'high sodium', so in this study, I categorized recipes above 20 PDV as 'High Sodium' and recipes under this threshold 'Low Sodium'. 
+
+*After examining the FDA site more closely, I found that 'Low Sodium' actually refers to food items that are below 5 PDV. For the sake of this project, the 'Low Sodium' category represents all sodium levels that are not high.*
 6. Outliers in nutrition information were removed using the IQR method of outlier detection. 
 
 The cleaned dataframe has the same columns as the merged recipes and ratings dataframe with additional PDV values and a new sodium_lvl column. The dataframe is displayed below with relevant columns: 
@@ -66,30 +67,31 @@ The cleaned dataframe has the same columns as the merged recipes and ratings dat
 
 
 ### Univariate Plots
+The number of steps is most frequently around 10 steps, and the overall distribution of number of steps is skewed to the right, with some outliers close to 100 steps. 
 <iframe
   src="assets/n_steps Histogram.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-The number of steps is most frequently around 10 steps, and the overall distribution of number of steps is skewed to the right, with some outliers close to 100 steps. 
 
+The sodium PDV histogram (before removing outliers) is heavily skewed to the right, indicating that there are some especially high sodium outliers in this dataset. 
 <iframe
   src="assets/Sodium PDV Histogram.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-The sodium PDV histogram (before removing outliers) is heavily skewed to the right, indicating that there are some especially high sodium outliers in this dataset. 
 
+After removing the outliers, the sodium PDV histogram is still skewed to the right, but less heavily so. 
 <iframe
   src="assets/(No Outliers) Sodium PDV Histogram.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-After removing the outliers, the sodium PDV histogram is still skewed to the right, but less heavily so. 
 
+The n_steps for low and high sodium recipes looked similar, with high sodium recipies having a slightly larger median n_steps. The two categories also have slightly different patterns of n_step upper outliers. 
 ### Bivariate Plots
 <iframe
   src="assets/bivariate_plot.html"
@@ -97,7 +99,6 @@ After removing the outliers, the sodium PDV histogram is still skewed to the rig
   height="600"
   frameborder="0"
 ></iframe>
-The n_steps for low and high sodium recipes looked similar, with high sodium recipies having a slightly larger median n_steps. The two categories also have slightly different patterns of n_step upper outliers. 
 
 
 ### Interesting Aggregates
@@ -137,42 +138,41 @@ Under the assumption that shorter or more simple recipes may not have a descript
 
 *The outliers in minutes spent cooking initially made it difficult to see the shape of the two distributions so the plot was rescaled*
 
+Since the distributions of minutes spent cooking when description is True and minutes spent cooking when description is False have a different shape and since I only aim to find out if the two distributions are different, I will use the KS test statistic for my permutation test.
 <iframe
   src="assets/Minutes Spent Cooking by Missingness of Description.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-Since the distributions of minutes spent cooking when description is True and minutes spent cooking when description is False have a different shape and since I only aim to find out if the two distributions are different, I will use the KS test statistic for my permutation test.
 
+Visually, the observed KS test statistic is in the emperical distribution of the KS test statistic, indicating that I fail to reject my null hypothesis that, using the 'minutes' column, the missing and not-missing distributions are the same. Missingness doesn't depend on the 'minutes spent' column. 
 <iframe
   src="assets/Empirical Distribution of the K-S Statistic.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-Visually, the observed KS test statistic is in the emperical distribution of the KS test statistic, indicating that I fail to reject my null hypothesis that, using the 'minutes' column, the missing and not-missing distributions are the same. Missingness doesn't depend on the 'minutes spent' column. 
 
 This was confirmed by my p-value of 0.192, which is clearly above my significance level of 0.05. 
 
-
 Following the same idea that shorter or more simple recipes may not have a description, I decided to investigate the 'n_steps' column next. 
 
+Since the distributions have different shapes and since I only aim to find out if the two distributions are different, I will use the KS test statistic for my permutation test. 
 <iframe
   src="assets/Number of Steps by Missingness of Description.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-Since the distributions have different shapes and since I only aim to find out if the two distributions are different, I will use the KS test statistic for my permutation test. 
 
+Visually, the observed KS test statistic is at the very edge of the emperical distribution of the KS test statistic, indicating that I might be able to reject my null hypothesis that, using the 'n_steps' column, the missing and not-missing distributions are the same. Missingness does depend on the 'n_steps' column. 
 <iframe
   src="assets/Second_Empirical Distribution of the K-S Statistic.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-Visually, the observed KS test statistic is at the very edge of the emperical distribution of the KS test statistic, indicating that I might be able to reject my null hypothesis that, using the 'n_steps' column, the missing and not-missing distributions are the same. Missingness does depend on the 'n_steps' column. 
 
 This was confirmed by my p-value of 0.008, which is clearly below my significance level of 0.05. 
 
@@ -183,24 +183,25 @@ Next, I used permutation testing to better understand the question: "Do more sim
 
 First I created a histogram to look at the distributions of n_steps at high and low sodium levels
 
+I used the difference in group means test statistic since the distributions looked like they were similar shapes with slightly different centers. 
 <iframe
   src="assets/dist_high_low_sod.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-I used the difference in group means test statistic since the distributions looked like they were similar shapes with slightly different centers. 
 
-Null Hypothesis:
-Alternative Hypothesis:
+Null Hypothesis: There is no difference between the group mean n_steps of the high and low sodium groups
 
+Alternative Hypothesis: The differnce between the group mean n_steps of the high sodium group is greater than that of the low sodium group
+
+On the empirical distribution of the mean differences with the observed group mean plotted, the observed group mean is far from the emperical distribution of the test statistic, indicating that I will likely reject my null hypothesis. I further confirmed this by calculating a p-value.
 <iframe
   src="assets/perm_testing_emp_dist.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
-On the empirical distribution of the mean differences with the observed group mean plotted, the observed group mean is far from the emperical distribution of the test statistic, indicating that I will likely reject my null hypothesis. I further confirmed this by calculating a p-value.
 
 I decided to choose a lower significance level to set more strict standards for evidence to reject the null hypothesis
 
@@ -240,14 +241,49 @@ Since minutes and n_ingredients have skewed distributions with a few outliers (d
 
 Since my previous model didn't show any particular signs of overfitting, I decided to tune a hyperparameter that addressed underfitting. I chose min_samples_split since as values go up, min_samples_split decreases overfitting. I wanted to test a broad hyperparameter range since I only chose one hyperparameter to tune, so I input hyperparamters 2, 5, 10, 20, 50, 100, and 200.
 
-After running GridSearchCV, I found that the best hyperparameter value for min_samples_split was 5. After applying this hyperparameter and training the RandomForestRegressor model, I was able to calculate the RMSE ont he training and testing data.
+After running GridSearchCV, I found that the best hyperparameter value for min_samples_split was 2. After applying this hyperparameter and training the RandomForestRegressor model, I was able to calculate the RMSE ont he training and testing data.
 
 |             |    RMSE |
 |:------------|--------:|
-| rmse_train2 | 4.73151 |
-| rmse_test2  | 4.87922 |
+| rmse_train2 | 4.71953 |
+| rmse_test2  | 4.87669 |
 
 The RMSE values were succesfully lowered from the baseline model, indicating that this model was an improvement from the original model. Since rmse_train and rmse_test are similar, it doesn't seem like my model is overfitting to the training data.
 
 
 ## Fairness Analysis
+I decided to use the sodium_lvl variable to split my testing data into two groups (Group X= 'High'; Group Y= 'Low') to evaluate the fairness of my final model (and to bring this project full-circle). My evaluation metric was RMSE. I chose this test statistic because I used it to evaluate my baseline and final models. 
+
+The observed RMSE values for the two groups were as follows:
+
+| sodium_lvl   |   accuracy |
+|:-------------|-----------:|
+| High         |    5.10408 |
+| Low          |    4.74524 |
+
+My hypotheses for this test were as follows: 
+
+Null Hypothesis: The regression model's RMSE is the same for both high sodium and low sodium recipes
+Alternative Hypothesis: The regression model's RMSE is higher for high sodium recipes
+
+I decided to choose a lower significance level to set more strict standards for evidence to reject the null hypothesis.
+
+Significance Level: 0.01
+p-value: 0.0
+
+<iframe
+  src="assets/Difference in RMSE (High - Low).html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+
+Since my p-value is below my significance level, I reject my null hypothesis that the regression model's RMSE is the same for both high sodium and low sodium recipes. The difference in RMSE between the two groups is statistically significant. This indicates that my model does not evaluate low sodium and high sodium recipes fairly. 
+
+
+
+
+
+
+
