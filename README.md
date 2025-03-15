@@ -1,4 +1,4 @@
-# Investigating Sodium Levels in Recipes
+# Investigating Sodium Levels and Number of Steps in Recipes
 by Saloni Dangre
 DSC80 Final Project
 
@@ -83,7 +83,7 @@ The number of steps is most frequently around 10 steps, and the overall distribu
 The sodium PDV histogram (before removing outliers) is heavily skewed to the right, indicating that there are some especially high sodium outliers in this dataset. 
 
 <iframe
-  src="assets/Sodium PDV Histogram (removed outliers).html"
+  src="assets/(No Outliers) Sodium PDV Histogram.html"
   width="800"
   height="600"
   frameborder="0"
@@ -210,9 +210,31 @@ p-value: 0.0
 Since my p-value is below my significance level, I reject my null hypothesis that there is no difference between the group mean n_steps of the high and low sodium groups. The difference between the two samples is statistically significant.
 
 ## Framing a Prediction Problem
+I will now shift to more closely examining the n_steps variable for this dataframe. I decided to investigate if I could predict the number of steps in recipes, which I used linear regression to answer.
+
+The reponse variable for this regression problem will be the number of steps, and I will use root mean square error ($RMSE$) to evaluate my model. I decided to use this metric over a metric like $R^2$ because I am more interested in measuring prediction error in my model over evaluating the variance explained by my model. 
+
+**CHECK IF THIS STATEMENT IS SOUND**
+Since I am looking to predict the number of steps, I will not train my model on the number of steps data.
 
 ## Baseline Model
+I chose the features sodium PDV, minutes, and n_ingredients to train my baseline regression model. 
+
+All three are quantitative variables. I used the StandardScalar tool for the minutes and n_ingredients models to standardize the units in each feature. I used the Binarizer tranformer to split the sodium PDV into two categories, using the threshold 20 PDV. After applying this transformation, this feature is now ordinal. 
+
+I choose minutes and n_ingredients since they seemed like variables that could be related to the overall time a recipe took and have a linear relationship with n_steps. I choose to investigate the relationship betwen sodium PDV (now similar to sodium_lvl after transformation) and n_steps further since the permutation test I ran on the n_steps and sodium_lvl came back with statistically significant results. 
+
+The RMSE on the training and testing data are as follows:
+
+|            |    RMSE |
+|:-----------|--------:|
+| rmse_train | 5.75289 |
+| rmse_test  | 5.69737 |
+
+
+Since rmse_train and rmse_test are similar, it doesn't seem like our model is overfitting to the training data. Additionally, considering that the range of n_steps is 99, the root mean square error for both the training and test data is at about 6% of the overall range of my predicted variable, which means, relative to my model, the RMSE is low. 
 
 ## Final Model
+I now seek to improve my baseline model by using a more complex regression model and utlizing hyperparameter tuning. I will use GridSearchCV to tune hyperparamters and use a RandomForestRegressor model to predict n_steps. 
 
 ## Fairness Analysis
