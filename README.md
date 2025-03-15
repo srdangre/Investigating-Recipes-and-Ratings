@@ -52,7 +52,7 @@ After downloading both datasets the steps below were followed to create a merged
 4. The 'nutrition' column was converted from a string to a list and seperated into respective columns (representing # for calories and PDV for the rest) as float values. Sodium (PDV) was the most relevant nutritional value to this project. 
 5. A new column 'sodium_lvl', containing booleans, was created by filtering the Sodium (PDV) column using the value 20 PDV as the threshold. The [FDA](https://www.fda.gov/food/nutrition-facts-label/lows-and-highs-percent-daily-value-nutrition-facts-label#:~:text=The%20percent%20Daily%20Value%20(%25,or%20low%20in%20a%20nutrient) considers sodium levels above 20 PDV 'high sodium', so in this study, I categorized recipes above 20 PDV as 'High Sodium' and recipes under this threshold 'Low Sodium'. 
 *After examining the FDA site more closely, I found that 'Low Sodium' actually refers to food items that are below 5 PDV. For the sake of this study, the 'Low Sodium' category represents all sodium levels that are not high.*
-6. Outliers in Sodium (PDV) were removed using the IQR method of outlier detection. 
+6. Outliers in nutrition information were removed using the IQR method of outlier detection. 
 
 The cleaned dataframe has the same columns as the merged recipes and ratings dataframe with additional PDV values and a new sodium_lvl column. The dataframe is displayed below with relevant columns: 
 
@@ -143,7 +143,7 @@ Under the assumption that shorter or more simple recipes may not have a descript
   height="600"
   frameborder="0"
 ></iframe>
-Since the distributions of minutes spent cooking when description is True and minutes spent cooking when description is False have a different shape and since we only aim to find out if the two distributions are different, we will use the KS test statistic for our permutation test.
+Since the distributions of minutes spent cooking when description is True and minutes spent cooking when description is False have a different shape and since I only aim to find out if the two distributions are different, I will use the KS test statistic for my permutation test.
 
 <iframe
   src="assets/Empirical Distribution of the K-S Statistic.html"
@@ -151,7 +151,7 @@ Since the distributions of minutes spent cooking when description is True and mi
   height="600"
   frameborder="0"
 ></iframe>
-Visually, the observed KS test statistic is in the emperical distribution of the KS test statistic, indicating that we fail to reject our null hypothesis that, using the 'minutes' column, the missing and not-missing distributions are the same. Missingness doesn't depend on the 'minutes spent' column. 
+Visually, the observed KS test statistic is in the emperical distribution of the KS test statistic, indicating that I fail to reject my null hypothesis that, using the 'minutes' column, the missing and not-missing distributions are the same. Missingness doesn't depend on the 'minutes spent' column. 
 
 This was confirmed by my p-value of 0.192, which is clearly above my significance level of 0.05. 
 
@@ -164,7 +164,7 @@ Following the same idea that shorter or more simple recipes may not have a descr
   height="600"
   frameborder="0"
 ></iframe>
-Since the distributions have different shapes and since we only aim to find out if the two distributions are different, we will use the KS test statistic for our permutation test. 
+Since the distributions have different shapes and since I only aim to find out if the two distributions are different, I will use the KS test statistic for my permutation test. 
 
 <iframe
   src="assets/Second_Empirical Distribution of the K-S Statistic.html"
@@ -172,7 +172,7 @@ Since the distributions have different shapes and since we only aim to find out 
   height="600"
   frameborder="0"
 ></iframe>
-Visually, the observed KS test statistic is at the very edge of the emperical distribution of the KS test statistic, indicating that we might be able to reject our null hypothesis that, using the 'n_steps' column, the missing and not-missing distributions are the same. Missingness does depend on the 'n_steps' column. 
+Visually, the observed KS test statistic is at the very edge of the emperical distribution of the KS test statistic, indicating that I might be able to reject my null hypothesis that, using the 'n_steps' column, the missing and not-missing distributions are the same. Missingness does depend on the 'n_steps' column. 
 
 This was confirmed by my p-value of 0.008, which is clearly below my significance level of 0.05. 
 
@@ -200,7 +200,7 @@ Alternative Hypothesis:
   height="600"
   frameborder="0"
 ></iframe>
-On the empirical distribution of the mean differences with the observed group mean plotted, the observed group mean is far from the emperical distribution of the test statistic, indicating that we will likely reject our null hypothesis. I further confirmed this by calculating a p-value.
+On the empirical distribution of the mean differences with the observed group mean plotted, the observed group mean is far from the emperical distribution of the test statistic, indicating that I will likely reject my null hypothesis. I further confirmed this by calculating a p-value.
 
 I decided to choose a lower significance level to set more strict standards for evidence to reject the null hypothesis
 
@@ -214,8 +214,7 @@ I will now shift to more closely examining the n_steps variable for this datafra
 
 The reponse variable for this regression problem will be the number of steps, and I will use root mean square error ($RMSE$) to evaluate my model. I decided to use this metric over a metric like $R^2$ because I am more interested in measuring prediction error in my model over evaluating the variance explained by my model. 
 
-**CHECK IF THIS STATEMENT IS SOUND**
-Since I am looking to predict the number of steps, I will not train my model on the number of steps data.
+Since I am looking to predict n_steps, I will drop the n_steps column from the input variables I use to train my model. 
 
 ## Baseline Model
 I chose the features sodium PDV, minutes, and n_ingredients to train my baseline regression model. 
@@ -232,9 +231,23 @@ The RMSE on the training and testing data are as follows:
 | rmse_test  | 5.69737 |
 
 
-Since rmse_train and rmse_test are similar, it doesn't seem like our model is overfitting to the training data. Additionally, considering that the range of n_steps is 99, the root mean square error for both the training and test data is at about 6% of the overall range of my predicted variable, which means, relative to my model, the RMSE is low. 
+Since rmse_train and rmse_test are similar, it doesn't seem like my model is overfitting to the training data. Additionally, considering that the range of n_steps is 99, the root mean square error for both the training and test data is at about 6% of the overall range of my predicted variable, which means, relative to my model, the RMSE is low. 
 
 ## Final Model
 I now seek to improve my baseline model by using a more complex regression model and utlizing hyperparameter tuning. I will use GridSearchCV to tune hyperparamters and use a RandomForestRegressor model to predict n_steps. 
+
+Since minutes and n_ingredients have skewed distributions with a few outliers (despite earlier efforts to remove outliers by IQR), I plan on using quantile transformer on both columns to improve the model. Since adding too many features to a model can lead to overfitting and high dimensionality, I also decided to drop the sodium (PDV) column. 
+
+Since my previous model didn't show any particular signs of overfitting, I decided to tune a hyperparameter that addressed underfitting. I chose min_samples_split since as values go up, min_samples_split decreases overfitting. I wanted to test a broad hyperparameter range since I only chose one hyperparameter to tune, so I input hyperparamters 2, 5, 10, 20, 50, 100, and 200.
+
+After running GridSearchCV, I found that the best hyperparameter value for min_samples_split was 5. After applying this hyperparameter and training the RandomForestRegressor model, I was able to calculate the RMSE ont he training and testing data.
+
+|             |    RMSE |
+|:------------|--------:|
+| rmse_train2 | 4.73151 |
+| rmse_test2  | 4.87922 |
+
+The RMSE values were succesfully lowered from the baseline model, indicating that this model was an improvement from the original model. Since rmse_train and rmse_test are similar, it doesn't seem like my model is overfitting to the training data.
+
 
 ## Fairness Analysis
